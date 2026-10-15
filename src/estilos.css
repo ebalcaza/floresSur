@@ -71,8 +71,7 @@ main {
 
 /* ---------- 3. Mosaico --------------------------------------------- */
 .galeria {
-  display: grid;
-  grid-auto-flow: dense; /* rellena los huecos que dejan las piezas grandes */
+  display: grid; /* cada pieza trae su posición calculada en Galeria.jsx */
   max-width: 1800px;
   margin: 0 auto;
 }

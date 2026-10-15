@@ -6,9 +6,13 @@ Pensada primero para el **celular**, y adaptada a tablets y pantallas grandes.
 
 ## Qué tiene
 
-- **Mosaico de distintos tamaños** (normal, ancho, alto, grande) con CSS Grid
-  `dense`: el navegador rellena los huecos solo. Las columnas se adaptan al ancho:
+- **Mosaico irregular**: cada foto tiene su propio ancho (1, 1½ o 2 columnas) y
+  su propia proporción (de apaisada a vertical), así no queda simétrico. Un
+  acomodador propio las encaja sin dejar huecos. Las columnas se adaptan al ancho:
   2 en el celular, hasta 6 en pantallas grandes.
+- **Vista previa al compartir**: al pegar el enlace en WhatsApp, Telegram, Facebook,
+  X, etc. aparece una tarjeta con título, descripción y una foto
+  (`public/vista-previa.jpg`, etiquetas Open Graph en `index.html`).
 - **Visor a pantalla completa** al tocar una imagen:
   - Celular: deslizar ← → para cambiar de foto, deslizar ↓ para cerrar,
     doble toque para hacer zoom.
@@ -47,7 +51,7 @@ Pensada primero para el **celular**, y adaptada a tablets y pantallas grandes.
 │   ├── estilos.css            ← cómo se usan esos colores
 │   ├── App.jsx                ← componente raíz: tema, tamaño y visor
 │   └── components/
-│       ├── Galeria.jsx        ← el mosaico (cálculo de columnas)
+│       ├── Galeria.jsx        ← el mosaico (columnas y acomodo de las piezas)
 │       ├── Mosaico.jsx        ← una pieza del mosaico
 │       ├── Visor.jsx          ← pantalla completa, gestos y zoom
 │       ├── SelectorTema.jsx   ← botón flotante de temas y tamaño
@@ -109,3 +113,85 @@ primero en el celular:
    "crezca" hasta la pantalla completa al abrirla.
 10. **Curaduría por orden**: permitir reordenar las piezas para crear ritmos visuales
     (una grande, varias chicas, una vertical...) como se montaría una muestra real.
+
+
+
+//notas para cuando hago cambios en el repostorio
+
+El problema es que tu proyecto nunca se conectó con Git. El mensaje not a git repository (or any of the parent directories) significa que ni dist/, ni floresSur/, ni ninguna carpeta superior tiene un repositorio Git. Por eso el repo de GitHub quedó vacío: nunca se subió nada.
+
+Además, no tenés que trabajar con Git dentro de dist/. Git se configura en la carpeta raíz del proyecto (floresSur), y el paquete gh-pages se encarga de subir dist/ por su cuenta.
+
+Paso 1: salí de dist/ y andá a la raíz del proyecto
+bash
+cd ..
+
+Comprobá que estás en el lugar correcto:
+
+bash
+pwd
+ls
+
+Tenés que estar en .../floresSur y ver package.json, src/, index.html, etc.
+
+Paso 2: revisá el .gitignore
+
+Abrí el archivo .gitignore de la raíz (Vite lo crea solo) y confirmá que tenga al menos esto:
+
+node_modules
+dist
+
+node_modules pesa muchísimo y no se sube nunca. dist tampoco va en la rama principal, porque gh-pages lo sube a otra rama.
+
+Paso 3: inicializá Git y hacé el primer commit
+bash
+git init
+git add .
+git commit -m "Primer commit"
+git branch -M main
+
+Si es la primera vez que usás Git en esa computadora y te pide nombre y correo, configuralos así y repetí el commit:
+
+bash
+git config --global user.name "Tu Nombre"
+git config --global user.email "tu-correo@ejemplo.com"
+Paso 4: conectá con tu repo de GitHub y subí
+
+En GitHub, abrí tu repo vacío y copiá la URL (botón verde Code). Va a ser algo como https://github.com/emilioSK8/floresSur.git. Después:
+
+bash
+git remote add origin https://github.com/emilioSK8/floresSur.git
+git push -u origin main
+
+Cambiá la URL por la de tu repo. Puede que se abra una ventana para iniciar sesión en GitHub.
+
+Si refrescás GitHub, ya deberías ver tu código.
+
+Paso 5: publicá el sitio
+
+Revisá que vite.config.js tenga el nombre exacto del repo, respetando mayúsculas:
+
+js
+base: '/floresSur/',
+
+Y ahora sí, desde la raíz del proyecto:
+
+bash
+npm run deploy
+
+Esto compila el proyecto y sube dist/ a una rama llamada gh-pages.
+
+Paso 6: activá GitHub Pages
+
+En GitHub, entrá a Settings → Pages. En Source elegí “Deploy from a branch”, y en Branch elegí gh-pages y la carpeta / (root). Guardá.
+
+Esperá uno o dos minutos y el sitio va a estar en https://emiliosk8.github.io/floresSur/.
+
+
+cada vez que haga cambios en el proy:
+git add .
+git commit -m "Descripción del cambio"
+git push
+npm run deploy
+
+git push guarda tu código en GitHub, y npm run deploy actualiza el sitio publicado.
